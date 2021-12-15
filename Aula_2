@@ -30,28 +30,20 @@ int main(int argc, char**argv)
 	}
 
 	c = 0;
-	printf("Tamanho da Estrutura: %ld\n\n", sizeof(Endereco));
+	printf(" Tamanho da Estrutura: %ld\n\n", sizeof(Endereco));
 	f = fopen("cep.dat","rb");
 	qt = fread(&e,sizeof(Endereco),1,f);
+	
 	while(qt > 0)
 	{
 		c++;
-		if(strstr(argv[1],e.logradouro)==0) // argv[1] == e.cep Dica2 -> strnstr
+		e.logradouro[71] = '\0';
+		if(strstr(e.logradouro,argv[1])) 
 		{
-			printf("%.72s\n%.72s\n%.72s\n%.72s\n%.2s\n%.8s\n",e.logradouro,e.bairro,e.cidade,e.uf,e.sigla,e.cep);
-			 // Dica 1 -> Nao Tem break. Precisa procurar todos
+			printf("%.72s\n ", e.logradouro);
 		}
 		qt = fread(&e,sizeof(Endereco),1,f);		
 	}
-	printf("Total Lido: %d\n", c);
+	printf("\n Total Lido: %d\n", c);
 	fclose(f);
 }
-
-// argv[1] < e.cep  => strcmp(argv[1],e.cep) < 0
-// argv[1] > e.cep  => strcmp(argv[1],e.cep) > 0
-// argv[1] == e.cep  => strcmp(argv[1],e.cep) == 0
-
-
-
-// e.logradouro[71] = '\0';
-// pode usar o strstr
