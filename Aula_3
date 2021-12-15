@@ -1,0 +1,22 @@
+import struct
+import sys
+
+if len(sys.argv) != 2:
+	print ("USO python3 {} [LOGRADOURO]".format(sys.argv[0]))
+	quit()
+
+registroLOGRADOURO = struct.Struct("72s72s72s72s2s8s2s")
+logradouroColumn = 0
+print ("Tamanho da Estrutura: {}".format(registroLOGRADOURO.size))
+f = open("cep.dat","rb")
+line = f.read(registroLOGRADOURO.size)
+counter = 0
+while len(line) > 0:
+	record = registroLOGRADOURO.unpack(line)
+	if sys.argv[1] in record[logradouroColumn].decode('latin1'):
+		for i in range(0,len(record)-1):
+			print (record[i].decode('latin1'))
+	line = f.read(registroLOGRADOURO.size)
+	counter += 1
+print ("Total de Registros Lidos: {}".format(counter))
+f.close()
